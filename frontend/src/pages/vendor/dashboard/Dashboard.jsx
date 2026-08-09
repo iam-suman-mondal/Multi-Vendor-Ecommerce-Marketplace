@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import api from '../../../apis/config/interceptors';
 
 const Dashboard = () => {
@@ -10,6 +10,7 @@ const Dashboard = () => {
   });
   const [recentOrders, setRecentOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [productCount, setProductCount] = useState(0);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -17,7 +18,8 @@ const Dashboard = () => {
         // Fetch analytics and vendor orders in parallel
         const [analyticsRes, ordersRes] = await Promise.all([
           api.get('/api/orders/vendor/analytics'),
-          api.get('/api/orders/vendor')
+          api.get('/api/orders/vendor'),
+          api.get('/api/products/product-count')
         ]);
 
         setAnalytics(analyticsRes.data);
@@ -26,6 +28,7 @@ const Dashboard = () => {
         const ordersData = Array.isArray(ordersRes.data) ? ordersRes.data : [];
         const sortedOrders = ordersData.sort((a, b) => b.id - a.id).slice(0, 3);
         setRecentOrders(sortedOrders);
+       // setProductCount(productCountRes.data);
 
       } catch (error) {
         console.error("Failed to load dashboard data", error);
@@ -33,17 +36,38 @@ const Dashboard = () => {
         setLoading(false);
       }
     };
+    const fetchProductCount = async () => {
+      try {
+        const productCountRes = await api.get('/api/products/product-count');
+        const countData = productCountRes.data;
+        
+        const actualCount = typeof countData === 'object' && countData !== null
+          ? (countData.count ?? countData.totalProducts ?? countData.productCount ?? 0)
+          : (Number(countData) || 0);
+
+        setProductCount(actualCount);
+      } catch (error) {
+        console.error("Failed to load product count", error);
+      }
+    };
+
 
     fetchDashboardData();
+    fetchProductCount();
   }, []);
 
-  // Transform backend weeklySales array into Recharts-friendly format
-  const salesData = analytics.weeklySales && analytics.weeklySales.length > 0
-    ? analytics.weeklySales.map(item => ({
-        day: item.day ? item.day.slice(0, 3) : '',
-        Sales: item.income
-      }))
-    : [{ day: 'Mon', Sales: 0 }];
+
+  const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const salesData = weekDays.map(dayName => {
+    const found = analytics.weeklySales && analytics.weeklySales.find(item => {
+      const itemDay = item.day ? item.day.slice(0, 3) : '';
+      return itemDay.toLowerCase() === dayName.toLowerCase();
+    });
+    return {
+      day: dayName,
+      Sales: found ? (found.income ?? found.Sales ?? 0) : 0
+    };
+  });
 
   return (
     <div className="container-fluid pt-4">
@@ -87,7 +111,7 @@ const Dashboard = () => {
           <div className="p-3 border rounded bg-white shadow-sm d-flex justify-content-between align-items-center">
             <div>
               <h6 className="text-muted small text-uppercase fw-semibold mb-1">Total Products</h6>
-              <h3 className="fw-bold mb-0">18</h3>
+              <h3 className="fw-bold mb-0">{loading ? '...' : productCount}</h3>
             </div>
             <div className="fs-3">🏷️</div>
           </div>

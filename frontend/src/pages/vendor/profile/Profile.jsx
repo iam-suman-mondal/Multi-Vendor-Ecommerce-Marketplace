@@ -43,10 +43,19 @@ const Profile = () => {
 
     fetchProfile();
   }, []);
-
+// Helper to generate initials (e.g., "Suman Mondal" -> "SM")
+  const getInitials = (name) => {
+    if (!name) return 'V';
+    const parts = name.trim().split(' ');
+    if (parts.length >= 2) {
+      return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
+  };
   if (loading) {
     return <div className="text-center py-5 fw-bold">Loading profile...</div>;
   }
+  
 
   return (
     <div className="container-fluid py-4 bg-light min-vh-100">
@@ -55,16 +64,25 @@ const Profile = () => {
         <div className="col-12 col-lg-9">
           
           <div className="card border-0 shadow-sm p-4 p-md-5 bg-white">
-            <div className="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between pb-4 mb-4 border-bottom">
-              <div>
-                <h2 className="fw-bold text-dark mb-1">Vendor Profile</h2>
-                <p className="text-muted m-0 small">Official registration credentials and profile summary.</p>
+         <div className="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between pb-4 mb-4 border-bottom">
+              <div className="d-flex align-items-center">
+                <div 
+                  className="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center fw-bold me-3 shadow-sm"
+                  style={{ width: '48px', height: '48px', fontSize: '1rem' }}
+                >
+                  {getInitials(formData.name)}
+                </div>
+                <div>
+                  <h2 className="fw-bold text-dark mb-0 fs-4">{formData.name || "Vendor"}</h2>
+                  <p className="text-muted m-0 small">Vendor</p>
+                </div>
               </div>
               <div className="mt-3 mt-sm-0">
                 <span className="badge bg-dark px-3 py-2 fs-6 fw-semibold rounded">
                   PAN: {formData.panNo}
                 </span>
               </div>
+            </div>
             </div>
 
             <div className="row g-4">
@@ -111,7 +129,7 @@ const Profile = () => {
                 </button>
               </div>
             </div>
-          </div>
+          
 
         </div>
       </div>
