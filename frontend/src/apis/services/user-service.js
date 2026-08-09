@@ -104,6 +104,25 @@ export const deleteCustomerProfile = async () => {
   return response.data;
 };
 
+/**
+ * Fetches the currently logged-in customer's profile.
+ */
+export const getCustomerProfile = async () => {
+  const response = await api.get(`/customers/profile`);
+  return response.data;
+};
+
+
+/**
+ * Updates the currently logged-in customer's profile.
+ * @param {Object} payload - Updated customer details
+ */
+export const updateCustomerProfile = async (payload) => {
+  const response = await api.put(`/customers/profile`, payload);
+  return response.data;
+};
+
+
 
 // =========================================================================
 // 3. VENDOR SERVICE API CALLS
