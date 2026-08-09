@@ -28,7 +28,7 @@ const ForgotPassword = () => {
 
       toast.success(response.data);
 
-      navigate("/auth/reset-password", {
+      navigate("/auth/resetPassword", {
         state: { email },
       });
     } catch (error) {
