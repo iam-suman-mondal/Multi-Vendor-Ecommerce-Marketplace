@@ -84,6 +84,7 @@ const CustomerSignup = () => {
     });
 
   } catch (error) {
+    toast.error("Customer Already Exit/ Invalid Otp")
   console.log(error);
   console.log(error.response);
   console.log(error.response?.status);
