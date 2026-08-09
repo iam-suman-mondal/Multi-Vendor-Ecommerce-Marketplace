@@ -241,10 +241,12 @@ const ProductDetails = () => {
               onChange={(e) => setProductCategory(e.target.value)}
             >
               <option value="ELECTRONICS">ELECTRONICS</option>
+              <option value="CLOTHING">CLOTHING</option>
               <option value="HOME_APPLIANCES">HOME_APPLIANCES</option>
-              <option value="FASHION">FASHION</option>
-              <option value="GROCERY">GROCERY</option>
               <option value="BOOKS">BOOKS</option>
+             <option value="BEAUTY">BEAUTY</option>
+             <option value="SPORTS">SPORTS</option>
+             <option value="GROCERY">GROCERY</option>
             </select>
           </div>
         </div>
