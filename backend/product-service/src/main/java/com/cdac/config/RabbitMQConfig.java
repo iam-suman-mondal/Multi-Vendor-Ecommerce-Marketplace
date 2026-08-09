@@ -12,7 +12,12 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
 
     public static final String LOG_QUEUE = "central-logs";
-    //public static final String NOTIFICATION_QUEUE = "notification-queue";
+    public static final String QUEUE_NAME = "ai.product.events";
+
+    @Bean
+    public Queue aiProductQueue() {
+        return new Queue(QUEUE_NAME, true);
+    }
 
     @Bean
     public Queue logQueue() {
