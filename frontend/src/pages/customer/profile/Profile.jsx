@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import { getCustomerProfile, updateCustomerProfile } from "../../../apis/services/user-service";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -8,21 +9,37 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const [user, setUser] = useState({
-    name: "Prathamesh Rayke Gajanan",
-    email: "prathameshrayke1@gmail.com",
-    phone: "9119629523",
-    address: "Ghorkpur",
+    name: "",
+    email: "",
+    phoneNo: "",
+    address: "",
   });
-const handlerSave = () => {
-  setIsEditing(false);
-  toast.success("Profile Updated Successfully");
-};
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await getCustomerProfile();
+        setUser(data);
+      } catch (error) {
+        toast.error("Failed to load profile data");
+      }
+    };
+    fetchProfile();
+  }, []);
+  const handlerSave = async () => {
+    try {
+      await updateCustomerProfile(user);
+      setIsEditing(false);
+      toast.success("Profile Updated Successfully");
+    } catch (error) {
+      toast.error("Failed to update profile");
+    }
+  };
+
   const handleChange = (e) => {
     setUser({
       ...user,
       [e.target.name]: e.target.value,
     });
-    toast.success("Update Profile Successful");
   };
 
   return (
@@ -79,13 +96,13 @@ const handlerSave = () => {
                 {isEditing ? (
                   <input
                     type="text"
-                    name="phone"
+                    name="phoneNo"
                     className="form-control"
-                    value={user.phone}
+                    value={user.phoneNo}
                     onChange={handleChange}
                   />
                 ) : (
-                  user.phone
+                  user.phoneNo
                 )}
               </td>
             </tr>
