@@ -26,18 +26,22 @@ public class ProductServiceImpl implements ProductService {
 	private final ProductRepository productRepository;
 	private final ModelMapper mapper;
 	private final CentralLoggerService centralLogger;
+	private final ProductEventService eventProducer;
 	
 	@Override
 	@Transactional
 	public ApiResponse addProduct(AddProductDto dto, String userRole) {
 		
 		Product product=mapper.map(dto, Product.class);
-		productRepository.save(product);
+		Product newProduct=productRepository.save(product);
 		centralLogger.info(
 	            userRole,
 	            dto.getVendorId(),
 	            "Product added successfully"
 	    );
+		 eventProducer.sendProductCreated(
+	                newProduct.getProductId()
+	      );
 		return new ApiResponse("Success", "Product Added Successfully");
 	}
 	
@@ -74,6 +78,10 @@ public class ProductServiceImpl implements ProductService {
 		            vendorId,
 		            "Product added successfully"
 		    );
+		    
+		    eventProducer.sendProductCreated(
+	                updatedProduct.getProductId()
+	      );
 		return updatedProduct;
 	}
 
@@ -96,6 +104,10 @@ public class ProductServiceImpl implements ProductService {
 			            "Product "+productId+" deleted successfully"
 			    );
 				
+				 eventProducer.sendProductCreated(
+			               productId
+			      );
+				
 		}
 		else if(userRole.equals("ROLE_ADMIN")) {
 		productRepository.delete(product);
@@ -103,7 +115,11 @@ public class ProductServiceImpl implements ProductService {
 	            userRole,
 	            userId,
 	            "Product "+productId+" deleted successfully"
-	    );}
+	    );
+		
+		 eventProducer.sendProductCreated(
+	               productId
+	      );}
 		else {
 			throw new RuntimeException(
                     "Vendor is not authorized to delete this product");
@@ -131,6 +147,11 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<Product> getByProductName(String keyword) {
 		return productRepository.findByNameContainingIgnoreCase(keyword);
+	}
+
+	@Override
+	public List<Product> getAllProduct() {
+		return productRepository.findAll();
 	}
 	
 

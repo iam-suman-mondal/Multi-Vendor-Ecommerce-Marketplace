@@ -30,6 +30,8 @@ public interface ProductService {
 	Long getMyProductCount(Long vendorId);
 
 	List<Product> getByProductName(String productName);
+
+	List<Product> getAllProduct();
 	
 
 }
