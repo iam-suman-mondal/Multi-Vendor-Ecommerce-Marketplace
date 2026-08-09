@@ -8,10 +8,10 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const [user, setUser] = useState({
-    name: "Rishu Maddheshiya",
-    email: "rkmn8236@gmail.com",
+    name: "Prathamesh Rayke Gajanan",
+    email: "prathameshrayke1@gmail.com",
     phone: "9119629523",
-    address: "Pune Hinjewadi",
+    address: "Ghorkpur",
   });
 const handlerSave = () => {
   setIsEditing(false);
