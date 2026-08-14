@@ -11,7 +11,7 @@ const Sidebar = () => {
   const handleLogout = () => {
     dispatch(logout());
     toast.success("Successfully logged out")
-    navigate('/auth/login')
+    navigate('/')
   } 
 
   return (

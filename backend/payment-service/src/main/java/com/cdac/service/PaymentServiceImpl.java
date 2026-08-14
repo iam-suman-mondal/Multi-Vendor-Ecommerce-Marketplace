@@ -74,7 +74,7 @@ public class PaymentServiceImpl implements PaymentService {
 		customerDetails.setCustomerPhone(dto.getCustomerPhoneNo());
 
 		OrderMeta orderMeta = new OrderMeta();
-		orderMeta.setReturnUrl("http://localhost:5173/customer/process-payment?orderId=" + dto.getOrderId());
+		orderMeta.setReturnUrl("https://indiamart-marketplace.vercel.app/customer/process-payment?orderId=" + dto.getOrderId());
         orderMeta.setNotifyUrl(cashfreeProperties.getBackendUrl() + "/api/payments/webhook");
 		
         CreateOrderRequest request = new CreateOrderRequest();
@@ -180,7 +180,7 @@ public class PaymentServiceImpl implements PaymentService {
 	            payment.setStatus(PaymentStatus.FAILED);
 	
 	            // Calling product service to RELEASE reserved stock
-	            orderServiceClient.updateOrderStatus(dto.getOrderId(), OrderStatus.CANCELLED);
+	            //orderServiceClient.updateOrderStatus(dto.getOrderId(), OrderStatus.CANCELLED);
 	            
 	        }
 	

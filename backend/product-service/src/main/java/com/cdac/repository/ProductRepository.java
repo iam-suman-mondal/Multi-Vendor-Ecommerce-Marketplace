@@ -10,7 +10,7 @@ import com.cdac.entities.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long>{
 
-	List<Product> findByCategory(Category category);
+	List<Product> findByCategoryAndAvailableQuantityGreaterThan(Category category, int quantity);
 
 	List<Product> findByVendorId(Long vendorId);
 
