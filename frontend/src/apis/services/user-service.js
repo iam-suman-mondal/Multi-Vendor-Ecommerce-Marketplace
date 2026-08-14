@@ -33,7 +33,7 @@ export const refreshTokenApi = async (refreshToken) => {
  * @param {Object} payload - Customer details (e.g., name, email, password)[cite: 3]
  */
 export const customerSignup = async (payload) => {
-  const response = await api.post(`/auth/customers/signup`, payload);
+  const response = await axios.post(`/auth/customers/signup`, payload);
   return response.data;
 };
 
