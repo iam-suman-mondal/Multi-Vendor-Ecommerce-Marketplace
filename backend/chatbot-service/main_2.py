@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from chat_bot_logic_2 import answer_question
-from rabbitmq_listener import start_rabbitmq_listener
+from rabbitmq_listener_2 import start_rabbitmq_listener
 
 
 # =====================================================

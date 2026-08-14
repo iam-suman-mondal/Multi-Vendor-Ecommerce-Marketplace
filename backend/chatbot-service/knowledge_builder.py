@@ -85,7 +85,7 @@ def sync_product(product_id):
     # ---------------------------------------------
 
     response = requests.get(
-        f"{SPRING_API_URL}/{product_id}",
+        f"http://localhost:8080/api/products/{product_id}",
         timeout=10
     )
 
