@@ -52,7 +52,8 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<Product> getProductsByCategory(Category category) {
-		return productRepository.findByCategory(category);
+		int stock = 0;
+		return productRepository.findByCategoryAndAvailableQuantityGreaterThan(category, stock);
 	}
 
 	@Override
@@ -79,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
 		            "Product added successfully"
 		    );
 		    
-		    eventProducer.sendProductCreated(
+		    eventProducer.sendProductUpdated(
 	                updatedProduct.getProductId()
 	      );
 		return updatedProduct;
@@ -104,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
 			            "Product "+productId+" deleted successfully"
 			    );
 				
-				 eventProducer.sendProductCreated(
+				 eventProducer.sendProductDeleted(
 			               productId
 			      );
 				
@@ -117,7 +118,7 @@ public class ProductServiceImpl implements ProductService {
 	            "Product "+productId+" deleted successfully"
 	    );
 		
-		 eventProducer.sendProductCreated(
+		 eventProducer.sendProductDeleted(
 	               productId
 	      );}
 		else {
