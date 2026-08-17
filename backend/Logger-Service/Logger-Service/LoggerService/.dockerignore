@@ -1,0 +1,7 @@
+# Exclude local build artifacts — these conflict with dotnet restore inside the container
+bin/
+obj/
+.vs/
+*.user
+**/.git
+**/.gitignore

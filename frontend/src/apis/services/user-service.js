@@ -158,8 +158,16 @@ export const deleteVendorProfile = async () => {
 // 4. ADMIN SERVICE API CALLS
 // =========================================================================
 
+/*
+ * Fetches Admin Profile 
+ */
+export const getAdminProfile = async () => {
+  const response = await api.get(`/admin/profile`);
+  return response.data;
+} 
+
 /**
- * Fetches a specific customer's details by their database ID (Admin only)[cite: 2].
+ * Fetches a specific customer's details by their database ID (Admin only).
  * @param {Number} id - Customer ID
  */
 export const getCustomerDetailsById = async (id) => {

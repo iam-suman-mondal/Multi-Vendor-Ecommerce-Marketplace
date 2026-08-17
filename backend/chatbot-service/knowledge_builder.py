@@ -1,7 +1,8 @@
+import os
 import requests
 
 from chromadb import PersistentClient
-from langchain.embeddings import init_embeddings
+from langchain_ollama import OllamaEmbeddings
 
 from dotenv import load_dotenv
 
@@ -14,18 +15,21 @@ print("-------------- Chroma Knowledge Builder --------------")
 # 1. Embedding Model
 # =====================================================
 
-EMB_MODEL = "ollama:nomic-embed-text"
+OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 
-emb_model = init_embeddings(EMB_MODEL)
+emb_model = OllamaEmbeddings(
+    model="nomic-embed-text",
+    base_url=OLLAMA_HOST
+)
 
 
 # =====================================================
 # 2. Spring Product Service
 # =====================================================
 
-SPRING_API_URL = (
-    "http://localhost:8080/internal/allProducts"
-)
+SPRING_BASE_URL = os.environ.get("SPRING_BASE_URL", "http://localhost:8080")
+
+SPRING_API_URL = f"{SPRING_BASE_URL}/internal/allProducts"
 
 
 # =====================================================
@@ -85,7 +89,7 @@ def sync_product(product_id):
     # ---------------------------------------------
 
     response = requests.get(
-        f"http://localhost:8080/api/products/{product_id}",
+        f"{SPRING_BASE_URL}/api/products/{product_id}",
         timeout=10
     )
 
