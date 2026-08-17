@@ -1,7 +1,9 @@
 
+import os
+
 from langchain.chat_models import init_chat_model
-from langchain.embeddings import init_embeddings
 from langchain.messages import HumanMessage
+from langchain_ollama import OllamaEmbeddings
 from chromadb import PersistentClient
 import requests
 import json
@@ -13,8 +15,11 @@ load_dotenv()
 LLM_MODEL = "groq:openai/gpt-oss-20b"
 llm = init_chat_model(LLM_MODEL)
 
-EMB_MODEL = "ollama:nomic-embed-text"
-emb_model = init_embeddings(EMB_MODEL)
+OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
+emb_model = OllamaEmbeddings(
+    model="nomic-embed-text",
+    base_url=OLLAMA_HOST
+)
 
 # ChromaDB
 try:

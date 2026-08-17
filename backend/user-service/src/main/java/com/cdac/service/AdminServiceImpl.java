@@ -1,7 +1,5 @@
 package com.cdac.service;
 
-import org.jspecify.annotations.Nullable;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,8 +7,6 @@ import com.cdac.custom_exceptions.ResourceNotFoundException;
 import com.cdac.dto.AdminRespDto;
 import com.cdac.dto.AdminUpdateReqDto;
 import com.cdac.dto.ApiResponse;
-import com.cdac.dto.CustomerResponseDto;
-import com.cdac.entities.Customers;
 import com.cdac.entities.User;
 import com.cdac.repository.AdminRepository;
 import com.cdac.repository.UserRepository;
@@ -26,7 +22,6 @@ private final UserRepository userRepo;
 	public  AdminRespDto getAdminDetails(Long id) {
 		// TODO Auto-generated method stub
 		User entity=userRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Invalid Admin ID"));
-//		 custmr=customerRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Invalid customer ID"));
 		AdminRespDto responseDto = new AdminRespDto(entity.getName(),entity.getEmail(),entity.getPhoneNo(),entity.getAddress()
 		,entity.getIsActive());
 		return responseDto;

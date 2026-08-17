@@ -18,6 +18,7 @@ import com.cdac.dto.AdminDashboardAnalyticsDto;
 import com.cdac.dto.ApiResponse;
 import com.cdac.dto.CustomerProfileDTO;
 import com.cdac.dto.VendorDto;
+import com.cdac.service.AdminService;
 import com.cdac.service.AuthService;
 import com.cdac.service.CustomerService;
 import com.cdac.service.VendorService;
@@ -33,7 +34,13 @@ public class AdminController {
 	private final CustomerService customerService;
 	private final AuthService authService;
 	private final VendorService vendorService;
-
+	private final AdminService adminService;
+	
+	@GetMapping("/profile")
+	public ResponseEntity<?> getAdminProfile(@RequestHeader("X-User-Id") Long adminId) {
+		return ResponseEntity.ok(adminService.getAdminDetails(adminId));
+	}
+	
     // Customer-related API
     @GetMapping("/customers/{id}")
     @Validated
@@ -54,7 +61,6 @@ public class AdminController {
     public ResponseEntity<?> updateCustomerProfile(@Valid @RequestBody CustomerProfileDTO request) {
      
     	
-//    	System.out.println(request.getId()request.getName());
         // update database 
 
         return ResponseEntity
